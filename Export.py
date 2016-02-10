@@ -1,4 +1,3 @@
-import pySG
 
 class Export(object):
 

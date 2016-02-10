@@ -1,12 +1,14 @@
-import pySG
+from Node import Node
+from Mesh import Mesh
+from Face import Face
 
 class Import(object):
 
 	@staticmethod
 	def obj(fp):
 		
-		node = pySG.Node()
-		node.mesh = pySG.Mesh()
+		node = Node()
+		node.mesh = Mesh()
 
 		with open(fp) as f:
 			for line in f:
@@ -24,7 +26,7 @@ class Import(object):
 					node.mesh.addTexCoord(line[0], line[1])
 				elif 'f ' in line:
 					line = line.replace('f ', '').lstrip().split(' ')
-					face = pySG.Face()
+					face = Face()
 					# f v//vn 
 					if '//' in line[0]:
 						line = [int(i) for l in line for i in l.split('//')]

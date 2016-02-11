@@ -17,6 +17,8 @@ class Face:
 		self.vtB = None
 		self.vtC = None
 
+		
+
 	# def setVertices(self, vX, vY, vZ):
 	# 	self.vertices = [vX, vY, vZ]
 

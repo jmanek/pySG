@@ -1,5 +1,4 @@
 from Transform import Transform
-from Mesh import Mesh
 
 class Node(object):
 
@@ -40,4 +39,50 @@ class Node(object):
 	def parent(self, parent):
 		self._parent = parent
 		self.transform.parent = parent
+
+	def addChild(self, node):
+		if self.children is None: self.children = []
+		self.children.append(node)
+		node.parent = self
+
+	def removeChild(self, node):
+		if self.children is None: return
+		try:
+			self.children.remove(node)
+		except ValueError:
+			print 'Node not child of this node'
+
+	def getAllChildren(self, parent=False):
+		if parent:
+			nodes = [self]
+		else:
+			nodes = []
+		if self.children is not None:
+			for child in self.children:
+				nodes += child.getAllChildren(True)
+		return nodes
+
+	def getChildMeshes(self, parent=False):
+		if parent and self.mesh is not None:
+			meshes = [self.mesh]
+		else:
+			meshes = []
+		if self.children is not None:
+			for child in self.children:
+				meshes += child.getAllChildren(True)
+		return meshes
+
+	# def getChildMeshes(self, parent=None):
+	# 	if parent is None: 
+	# 		self._childMeshes = []
+	# 		parent = self
+	# 	elif self.mesh is not None:
+	# 		parent._childMeshes.append(self.mesh)
+	# 	if self.children is not None:
+	# 		for child in self.children:
+	# 			child.getChildMeshes(parent)
+	# 	if parent is self:
+	# 		return self._childMeshes
+
+
 	

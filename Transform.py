@@ -68,7 +68,7 @@ class Transform(object):
 									  [ 0, 0, 0, 1 ]]) 
 
 		if self.parent is not None:
-			self._matrix = parent.transform.matrix * self.locTransMat * self.locRotMat * self.locScaleMat
+			self._matrix = self.parent.transform.matrix * self.locTransMat * self.locRotMat * self.locScaleMat
 		else:
 			self._matrix = self.locTransMat * self.locRotMat * self.locScaleMat
 

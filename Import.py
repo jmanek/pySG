@@ -16,7 +16,6 @@ class Import(object):
 				line = line.rstrip()
 				if 'v ' in line:
 					line = line.replace('v ', '').lstrip().split(' ')
-					print line
 					node.mesh.addVertex(line[0], line[1], line[2])
 				elif 'vn ' in line:
 					line = line.replace('vn ', '').lstrip().split(' ')
@@ -59,7 +58,6 @@ class Import(object):
 						face.vnC = line[8]
 					# f v
 					else:
-						line = [int(i) for i in line]
 						face.vA = int(line[0])
 						face.vB = int(line[1])
 						face.vC = int(line[2])	

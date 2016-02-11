@@ -21,16 +21,16 @@ class Node(object):
 		return self.transform.scale
 	
 	@scale.setter
-	def scale(self, pos):
-		self.transform.setScale(pos)
+	def scale(self, scl):
+		self.transform.setScale(scl)
 
 	@property
 	def rotation(self):
 		return self.transform.rotation
 
 	@rotation.setter
-	def rotation(self, pos):
-		self.transform.setRotation(pos)
+	def rotation(self, rot):
+		self.transform.rotation = rot
 
 	@property
 	def parent(self):

@@ -5,6 +5,7 @@ class Export(object):
 	def obj(node, fp):
 		m = node.mesh
 		t = node.transform
+		t.updateMatrix()
 		hasNormals = False
 		hasTexCoords = False
 		with open(fp, 'w+') as fl:

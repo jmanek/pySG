@@ -4,10 +4,10 @@ class Quaternion(object):
 
 	def __init__(self, *args):
 		if len(args) == 4:
-			self.x = x
-			self.y = y
-			self.z = z
-			self.w = w
+			self.x = args[0]
+			self.y = args[1]
+			self.z = args[2]
+			self.w = args[3]
 		else:
 			self.x = 0
 			self.y = 0
@@ -15,10 +15,18 @@ class Quaternion(object):
 			self.w = 1
 
 	def getEuler(self):
+		print self
 		q0, q1, q2, q3 = self.w, self.x, self.y, self.z
-		x = math.degrees(math.atan( (2*(q0*q1 + q2*q3))/(1 - 2*(q1**2 + q2**2)) ))
-		y = math.degrees(math.asin( 2*(q0*q2 - q3*q1)))
-		z = math.degrees(math.atan( (2*(q0*q3 + q1*q2))/(1 - 2*(q2**2 + q3**2)) ))
+		xQ = (2*(q0*q1 + q2*q3))/(1 - 2*(q1**2 + q2**2))
+		xQ = min(1.0, xQ) if xQ > 0 else max(-1.0, xQ)
+		yQ =  2*(q0*q2 - q3*q1)
+		yQ = min(1.0, yQ) if yQ > 0 else max(-1.0, yQ)
+		zQ =  (2*(q0*q3 + q1*q2))/(1 - 2*(q2**2 + q3**2))
+		zQ = min(1.0, zQ) if zQ > 0 else max(-1.0, zQ)
+
+		x = math.degrees(math.atan( xQ ))
+		y = math.degrees(math.asin( yQ ))
+		z = math.degrees(math.atan( zQ ))
 		return [x, y, z]
 
 	def setEuler(self, x, y, z):
@@ -39,6 +47,13 @@ class Quaternion(object):
 		self.x = sx*cy*cz - cx*sy*sz
 		self.y = cx*sy*cz + sx*cy*sz
 		self.z = cx*cy*sz - sx*sy*cz
+
+	def set(self, x, y, z, w):
+		self.x = x
+		self.y = y
+		self.z = z
+		self.w = w
+
 
 
 	def __str__(self):

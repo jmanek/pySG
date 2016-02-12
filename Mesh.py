@@ -21,7 +21,6 @@ class Mesh:
 	# 		self.faces.append(Face(args[0], args[1], args[2]))
 	# 	else:
 	# 		self.faces.append(args[0])
-
 	def addNormal(self, *args):
 		if len(args) == 3:
 			self.normals.append(Vector3(args[0], args[1], args[2]))

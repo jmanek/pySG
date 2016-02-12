@@ -1,6 +1,9 @@
 from Transform import Transform
 
+
 class Node(object):
+
+	USE_LOCAL = True
 
 	def __init__(self):
 		self.transform = Transform()
@@ -37,13 +40,15 @@ class Node(object):
 
 	@parent.setter
 	def parent(self, parent):
-		self._parent = parent
-		self.transform.parent = parent
+		if self.USE_LOCAL:
+			self._parent = parent
+			self.transform.parent = parent
 
 	def addChild(self, node):
 		if self.children is None: self.children = []
+		
 		self.children.append(node)
-		node.parent = self
+		if self.USE_LOCAL: node.parent = self
 
 	def removeChild(self, node):
 		if self.children is None: return

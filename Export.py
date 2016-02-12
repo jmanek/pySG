@@ -1,3 +1,5 @@
+import string
+import random
 
 class Export(object):
 
@@ -10,14 +12,16 @@ class Export(object):
 		vs = []
 		vns = []
 		vts = []
+		# fs = ['o {0}\n' + ''.join(random.choice(string.lowercase) for i in range(10))]
 		fs = []
 		with open(fp, 'w+') as fl:
 
 			for n in [node] + node.getAllChildren():
-
+				if n.mesh is None: continue
 				m = n.mesh
 				t = n.transform
 				t.updateMatrix()
+				fs.append('g {0}\n'.format(''.join(random.choice(string.lowercase) for i in range(10))))
 				hasNormals = False
 				hasTexCoords = False
 

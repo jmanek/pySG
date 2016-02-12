@@ -15,6 +15,12 @@ class Vector3:
 	def array(self):
 		return np.array([self.x, self.y, self.z, 1])
 
+	def set(self, x, y, z):
+			self.x = x
+			self.y = y
+			self.z = z
+	
+
 	def __str__(self):
 		return '{0}, {1}, {2}'.format(self.x, self.y, self.z)
 

@@ -19,7 +19,16 @@ class Vector3:
 			self.x = x
 			self.y = y
 			self.z = z
-	
+			
+	def __setitem__(self, key, val):
+		if key == 0: self.x = val
+		if key == 1: self.y = val
+		if key == 2: self.z = val
+
+	def __getitem__(self, key):
+		if key == 0: return self.x
+		if key == 1: return self.y
+		if key == 2: return self.z
 
 	def __str__(self):
 		return '{0}, {1}, {2}'.format(self.x, self.y, self.z)

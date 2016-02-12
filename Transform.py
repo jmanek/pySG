@@ -56,9 +56,9 @@ class Transform(object):
 	def updateMatrix(self):
 		x,y,z,w = self.rotation.x, self.rotation.y, self.rotation.z, self.rotation.w
 		self.rotMat = np.matrix([ [ 1-2*(y**2)-2*(z**2), 2*x*y+2*w*z, 2*x*z-2*w*y, 0 ],
-								  [ 2*x*y-2*w*z, 1-2*(x**2)-2*(z**2), 2*y*z+2*w*x, 0 ],
-								  [ 2*x*z+2*w*y, 2*y*z-2*w*x, 1-2*(x**2)-2*(y**2), 0 ],
-								  [ 0, 0, 0, 1 ]])
+								[ 2*x*y-2*w*z, 1-2*(x**2)-2*(z**2), 2*y*z+2*w*x, 0 ],
+								[ 2*x*z+2*w*y, 2*y*z-2*w*x, 1-2*(x**2)-2*(y**2), 0 ],
+								[ 0, 0, 0, 1 ]])
 	
 		self.transMat = np.matrix([ [ 1, 0, 0, self.position.x ],
 									  [ 0, 1, 0, self.position.y ],

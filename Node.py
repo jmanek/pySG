@@ -58,23 +58,26 @@ class Node(object):
 			print 'Node not child of this node'
 
 	def getAllChildren(self, parent=False):
-		if parent:
-			nodes = [self]
-		else:
-			nodes = []
+		# if parent:
+		# 	nodes = [self]
+		# else:
+		# 	nodes = []
+
+		nodes = [self] if parent else []	
 		if self.children is not None:
 			for child in self.children:
 				nodes += child.getAllChildren(True)
 		return nodes
 
 	def getChildMeshes(self, parent=False):
-		if parent and self.mesh is not None:
-			meshes = [self.mesh]
-		else:
-			meshes = []
+		# if parent and self.mesh is not None:
+		# 	meshes = [self.mesh]
+		# else:
+		# 	meshes = []
+		meshes = [self.mesh] if parent and self.mesh is not None else []
 		if self.children is not None:
 			for child in self.children:
-				meshes += child.getAllChildren(True)
+				meshes += child.getChildMeshes(True)
 		return meshes
 
 	# def getChildMeshes(self, parent=None):

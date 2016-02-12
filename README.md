@@ -2,9 +2,10 @@
 A scene graph for python
 
 ```python
+# Build a cube and export it
 import pySG
 
-node = pySG.Node()
+box = pySG.Node()
 mesh = pySG.Mesh()
 
 # Add some points
@@ -31,9 +32,11 @@ mesh.addFace(8, 7, 3)
 mesh.addFace(2, 1, 5)
 mesh.addFace(5, 8, 2)
 
-node.mesh = mesh
-# Apply a rotation
+box.mesh = mesh
+# Add it to a parent node and apply a rotation
+node = pySG.Node()
 node.rotation.setEuler(45, 45, 0)
+node.addChild(box)
 
 # Export
 pySG.Export.obj(node, 'box.obj')

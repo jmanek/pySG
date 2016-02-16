@@ -1,5 +1,6 @@
 import string
 import random
+import os
 
 class Export(object):
 
@@ -13,6 +14,7 @@ class Export(object):
 		vns = []
 		vts = []
 		fs = []
+		materials = set()
 		with open(fp, 'w+') as fl:
 
 			for n in [node] + node.getAllChildren():
@@ -56,16 +58,30 @@ class Export(object):
 
 					mat = node.getMaterial(f)
 					if mat is not None and (currMaterial is None or currMaterial.name != mat.name):
-							currMaterial = mat
-							l.insert(0, 'usemtl {0}\n'.format(currMaterial.name))
+						currMaterial = mat
+						l.insert(0, 'usemtl {0}\n'.format(currMaterial.name))
+						materials.add(currMaterial)
 
 					fs.append(' '.join(l))
 					# fl.write(' '.join(l) + '\n')
 				vO += len(m.vertices)
 				vnO += len(m.normals)
 				vtO += len(m.texCoords)
+
+			if len(materials) != 0: fl.write('mtllib {0}\n'.format(os.path.splitext(fp)[0]+'.mtl'))
 			fl.write('\n'.join(vs)+'\n')
 			fl.write('\n'.join(vns)+'\n')
 			fl.write('\n'.join(vts)+'\n')
 			fl.write('\n'.join(fs))
+
+		if len(materials) != 0:
+			with open(fp.replace('.obj', '.mtl'), 'w+') as fl:
+				for m in materials:
+					fl.write('\nnewmtl {0}\n'.format(m.name))
+					if m.ambient is not None: fl.write('Ka {0} {1} {2}\n'.format(m.ambient.r, m.ambient.g, m.ambient.b))
+					if m.diffuse is not None: fl.write('Kd {0} {1} {2}\n'.format(m.diffuse.r, m.diffuse.g, m.diffuse.b))
+					if m.ambientMap is not None: fl.write('map_Ka {0}\n'.format(m.ambientMap))
+					if m.diffuseMap is not None: fl.write('map_Kd {0}\n'.format(m.diffuseMap))
+
+
 

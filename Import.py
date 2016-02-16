@@ -94,9 +94,9 @@ class Import(object):
 						for mat in node.materials:
 							if mat.name == line: material = mat
 					if 'map_Kd' in key:
-						material.diffuseMap = line.split(' ')
+						material.diffuseMap = line
 					elif 'map_Ka' in key:
-						material.ambientMap = line.split(' ')
+						material.ambientMap = line
 					elif 'Ka' in key:
 						line = line.split(' ')
 						material.ambient = Color(line[0], line[1], line[2])

@@ -98,49 +98,4 @@ class Node(object):
 		for mat, faces in self.materials.items():
 			if face in faces: return mat
 
-	# def getMaterial(self, idx):
-	# 	material = None
-	# 	if len(self.materials) == 0:
-	# 		return material
-	# 	for mat, rngs in self._materials.items():
-	# 		for rng in rngs:
-	# 			if idx >= rng[0] and idx <= rng[1]:
-	# 				material = mat
-	# 				break 
-	# 	return material
-
-	# def setMaterial(self, material, matRngs):
-	# 	if type(matRngs) is tuple: new
-	# 	new_mats = {material: [rng]}
-	# 	rngA = matRngs[0]
-	#  	rngB = matRngs[1]
-	# 	for mat, rngs in self._materials.items():
-	# 		newRngs = []
-	# 		for rng in rngs:
-	# 			a = rng[0]
-	# 			b = rng[1]
-				
-	# 			# clip any materials that are in the range of the new material, or overwrite them
-				
-	# 			# a is within the new range, but b is greater
-	# 			if a >= rngA and a <= rngB and b > rngB:
-	# 				newRngs.append((rngB + 1, b))
-				
-	# 			# b is within the new range, but a is smaller
-	# 			elif b >= rngA and b <= rngB and a < rngA:
-	# 				newRngs.append((a, rngA - 1))
-				
-	# 			# the old range includes the new range, split it
-	# 			elif a < rngA and b > rngB
-	# 				newRngs.append((a, rngA - 1))		
-	# 				newRngs.append((rngB + 1, b))		
-				
-	# 			#  other material is before or after new material's range 
-	# 			elif b < rngA or a > rngB:
-	# 				newRngs.append(rng)
-
-	# 		if len(newRngs) != 0: new_mats[mat] = newRngs
-
-	# 	self._materials = new_mats
-
 	

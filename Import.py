@@ -20,10 +20,7 @@ class Import(object):
 				if len(line) == 1: continue
 				key, line = line[0], line[1].lstrip()
 				if '#' in key: continue
-				if 'v ' in key:
-					line = line.split(' ')
-					node.mesh.addVertex(line[0], line[1], line[2])
-				elif 'vn' in key:
+				if 'vn' in key:
 					line = line.split(' ')
 					node.mesh.addNormal(line[0], line[1], line[2])
 				elif 'vt' in key:
@@ -34,7 +31,6 @@ class Import(object):
 					for mat in node.materials:
 						if line == mat.name:
 							material = mat
-							break
 					if material is None:
 						material = Material()
 						material.name = line
@@ -81,6 +77,11 @@ class Import(object):
 						face.vC = int(line[2])	
 
 					node.mesh.faces.append(face)
+				elif 'v' in key:
+					line = line.split(' ')
+					node.mesh.addVertex(line[0], line[1], line[2])
+
+
 		if os.path.isfile(fp.replace('.obj', '.mtl')):
 			with open(fp.replace('.obj', '.mtl')) as f:
 				material = None
@@ -98,7 +99,6 @@ class Import(object):
 						material.ambientMap = line.split(' ')
 					elif 'Ka' in key:
 						line = line.split(' ')
-						print line
 						material.ambient = Color(line[0], line[1], line[2])
 					elif 'Kd' in key:
 						line = line.split(' ')

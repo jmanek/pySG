@@ -12,7 +12,6 @@ class Export(object):
 		vs = []
 		vns = []
 		vts = []
-		# fs = ['o {0}\n' + ''.join(random.choice(string.lowercase) for i in range(10))]
 		fs = []
 		with open(fp, 'w+') as fl:
 
@@ -24,6 +23,7 @@ class Export(object):
 				fs.append('g {0}\n'.format(''.join(random.choice(string.lowercase) for i in range(10))))
 				hasNormals = False
 				hasTexCoords = False
+				currMaterial = None
 
 				for v in m.vertices:
 					v = t.transformVector(v)
@@ -53,6 +53,12 @@ class Export(object):
 						l[0] += '//' + str(f.vnA+vnO)
 						l[1] += '//' + str(f.vnB+vnO)
 						l[2] += '//' + str(f.vnC+vnO)
+
+					mat = node.getMaterial(f)
+					if mat is not None and (currMaterial is None or currMaterial.name != mat.name):
+							currMaterial = mat
+							l.insert(0, 'usemtl {0}\n'.format(currMaterial.name))
+
 					fs.append(' '.join(l))
 					# fl.write(' '.join(l) + '\n')
 				vO += len(m.vertices)

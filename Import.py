@@ -1,6 +1,10 @@
 from Node import Node
 from Mesh import Mesh
 from Face import Face
+from Material import Material
+from Color import Color
+
+import os
 
 class Import(object):
 
@@ -9,23 +13,37 @@ class Import(object):
 		
 		node = Node()
 		node.mesh = Mesh()
-
 		with open(fp) as f:
+			material = None
 			for line in f:
-				if '#' in line: continue
-				line = line.rstrip()
-				if 'v ' in line:
-					line = line.replace('v ', '').lstrip().split(' ')
+				line = line.strip().split(' ', 1)
+				if len(line) == 1: continue
+				key, line = line[0], line[1].lstrip()
+				if '#' in key: continue
+				if 'v ' in key:
+					line = line.split(' ')
 					node.mesh.addVertex(line[0], line[1], line[2])
-				elif 'vn ' in line:
-					line = line.replace('vn ', '').lstrip().split(' ')
+				elif 'vn' in key:
+					line = line.split(' ')
 					node.mesh.addNormal(line[0], line[1], line[2])
-				elif 'vt ' in line:
-					line = line.replace('vt ', '').lstrip().split(' ')
+				elif 'vt' in key:
+					line = line.split(' ')
 					node.mesh.addTexCoord(line[0], line[1])
-				elif 'f ' in line:
-					line = line.replace('f ', '').lstrip().split(' ')
+				elif 'usemtl' in key:
+					material = None
+					for mat in node.materials:
+						if line == mat.name:
+							material = mat
+							break
+					if material is None:
+						material = Material()
+						material.name = line
+						node.materials[material] = set()
+
+				elif 'f' in key:
+					line = line.split(' ')
 					face = Face()
+					if material is not None: node.materials[material].add(face)
 					# f v//vn 
 					if '//' in line[0]:
 						line = [int(i) for l in line for i in l.split('//')]
@@ -63,6 +81,28 @@ class Import(object):
 						face.vC = int(line[2])	
 
 					node.mesh.faces.append(face)
+		if os.path.isfile(fp.replace('.obj', '.mtl')):
+			with open(fp.replace('.obj', '.mtl')) as f:
+				material = None
+				for line in f:
+					line = line.strip().split(' ', 1)
+					if len(line) == 1: continue
+					key, line = line[0], line[1].lstrip()
+					if '#' in key: continue
+					if 'newmtl' in key:
+						for mat in node.materials:
+							if mat.name == line: material = mat
+					if 'map_Kd' in key:
+						material.diffuseMap = line.split(' ')
+					elif 'map_Ka' in key:
+						material.ambientMap = line.split(' ')
+					elif 'Ka' in key:
+						line = line.split(' ')
+						print line
+						material.ambient = Color(line[0], line[1], line[2])
+					elif 'Kd' in key:
+						line = line.split(' ')
+						material.diffuse = Color(line[0], line[1], line[2])
 		return node
 
 

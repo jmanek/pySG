@@ -30,8 +30,6 @@ class Face:
 			self.vtC = None
 
 
-
-
 		
 
 	def setVertices(self, *args):

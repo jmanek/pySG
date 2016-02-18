@@ -22,15 +22,16 @@ class Export(object):
 				m = n.mesh
 				t = n.transform
 				t.updateMatrix()
-				fs.append('g {0}\n'.format(''.join(random.choice(string.lowercase) for i in range(10))))
+				# fs.append('g {0}\n'.format(''.join(random.choice(string.lowercase) for i in range(10))))
 				hasNormals = False
 				hasTexCoords = False
 				currMaterial = None
+				mat = None
 
 				for v in m.vertices:
 					v = t.transformVector(v)
 					# fl.write('v {0} {1} {2}\n'.format(v[0], v[1], v[2]))
-					vs.append('v {0} {1} {2}'.format(v[0], v[1], v[2]))
+					vs.append('v {0} {1} {2}'.format(-v[0], v[1], v[2]))
 				for vn in m.normals:
 					vns.append('vn {0} {1} {2}'.format(vn.x, vn.y, vn.z))
 				for vt in m.texCoords:
@@ -56,7 +57,7 @@ class Export(object):
 						l[1] += '//' + str(f.vnB+vnO)
 						l[2] += '//' + str(f.vnC+vnO)
 
-					mat = node.getMaterial(f)
+					mat = n.getMaterial(f)
 					if mat is not None and (currMaterial is None or currMaterial.name != mat.name):
 						currMaterial = mat
 						l.insert(0, 'usemtl {0}\n'.format(currMaterial.name))
@@ -74,7 +75,10 @@ class Export(object):
 			fl.write('\n'.join(vts)+'\n')
 			fl.write('\n'.join(fs))
 
+		print 'Exporting materials'
+		print len(materials)
 		if len(materials) != 0:
+			print 'Exporting materials'
 			with open(fp.replace('.obj', '.mtl'), 'w+') as fl:
 				for m in materials:
 					fl.write('\nnewmtl {0}\n'.format(m.name))

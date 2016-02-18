@@ -1,6 +1,7 @@
 import numpy as np
+import math
 
-class Vector3:
+class Vector3(object):
 
 	def __init__(self, *args):
 		if len(args) == 3:
@@ -19,6 +20,25 @@ class Vector3:
 			self.x = x
 			self.y = y
 			self.z = z
+
+	def normalize(self):
+		mag = math.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
+		return Vector3(self.x/mag, self.y/mag, self.z/mag)
+
+	@staticmethod
+	def up():
+		return Vector3(0.0, 1.0, 0.0)
+
+	@staticmethod
+	def cross(a, b):
+		x = a.y * b.z - a.z * b.y
+		y = a.z * b.x - a.x * b.z
+		z = a.x * b.y - a.y * b.x
+		return Vector3(x, y, z)
+
+	def __neg__(self):
+		return Vector3(-self.x, -self.y, -self.z)
+		
 			
 	def __setitem__(self, key, val):
 		if key == 0: self.x = val

@@ -49,25 +49,29 @@ class Transform(object):
 		vec =  np.dot(self._matrix, vector.array()).A[0]
 		return [vec[0], vec[1], vec[2]]
 
-
-
-
-
-	def updateMatrix(self):
+	def updateRotationMatrix(self):
 		x,y,z,w = self.rotation.x, self.rotation.y, self.rotation.z, self.rotation.w
 		self.rotMat = np.matrix([ [ 1-2*(y**2)-2*(z**2), 2*x*y+2*w*z, 2*x*z-2*w*y, 0 ],
-								[ 2*x*y-2*w*z, 1-2*(x**2)-2*(z**2), 2*y*z+2*w*x, 0 ],
-								[ 2*x*z+2*w*y, 2*y*z-2*w*x, 1-2*(x**2)-2*(y**2), 0 ],
-								[ 0, 0, 0, 1 ]])
-	
+							[ 2*x*y-2*w*z, 1-2*(x**2)-2*(z**2), 2*y*z+2*w*x, 0 ],
+							[ 2*x*z+2*w*y, 2*y*z-2*w*x, 1-2*(x**2)-2*(y**2), 0 ],
+							[ 0, 0, 0, 1 ]])	
+
+	def updateTranslationMatrix(self):
 		self.transMat = np.matrix([ [ 1, 0, 0, self.position.x ],
 									  [ 0, 1, 0, self.position.y ],
 								   	  [ 0, 0, 1, self.position.z ],
 									  [ 0, 0, 0, 1 ]])
+	def updateScaleMatrix(self):
 		self.sclMat = np.matrix([ [ self.scale.x, 0, 0, 0],
 									  [ 0, self.scale.y, 0, 0],
 									  [ 0, 0, self.scale.z, 0],
 									  [ 0, 0, 0, 1 ]]) 
+			
+
+	def updateMatrix(self):
+		self.updateRotationMatrix()
+		self.updateTranslationMatrix()
+		self.updateScaleMatrix()
 
 		if self.parent is not None:
 			self._matrix = self.parent.transform.matrix * self.transMat * self.rotMat * self.sclMat

@@ -1,9 +1,4 @@
-from Node import Node as Node
-from Vector3 import Vector3 as Vector3
-from Vector2 import Vector2 as Vector2
-from Mesh import Mesh as Mesh
-from Face import Face as Face
-from Quaternion import Quaternion as Quaternion
-from Transform import Transform as Transform
-from Import import Import as Import
-from Export import Export as Export
+from Node import Node 
+from IO import *
+from Math import *
+from Geometry import *

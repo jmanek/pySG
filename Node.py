@@ -1,4 +1,4 @@
-from Transform import Transform
+from Math import Transform
 
 
 class Node(object):
@@ -45,6 +45,9 @@ class Node(object):
 		if self.USE_LOCAL:
 			self._parent = parent
 			self.transform.parent = parent
+
+	def rotate(self, *args):
+		self.transform.rotate(*args)
 
 	def addChild(self, node):
 		if self.children is None: self.children = []

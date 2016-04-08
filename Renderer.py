@@ -3,11 +3,17 @@ import sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from Vector2 import Vector2
+from Vector3 import Vector3
 import numpy as np
 import ctypes
 import math
 
 class Renderer(object):
+
+	ZOOM_MOVE = 0.5
+	PAN_MOVE = 0.12
+
 
 	def __init__(self, camera, node):
 		self.camera = camera
@@ -17,7 +23,8 @@ class Renderer(object):
 		self.setupCallbacks()
 		self.compileShaders()
 		self.buildBuffers()
-		self.scale = 0.3
+		self.scale = 0.0005
+		self.mouse = Vector2()
 
 		glutMainLoop()
 
@@ -33,11 +40,48 @@ class Renderer(object):
 		glutDisplayFunc(self.display)
 		glutIdleFunc(self.display)
 		glutKeyboardFunc(self.keyboard)
+		glutSpecialFunc(self.keyboard)
+		glutMouseFunc(self.mouse)
+		glutMotionFunc(self.mouseMove)
+		glutMouseWheelFunc(self.mouseWheel)
 	
 	def keyboard(self, key, x, y ):
-	    if key == '\033':
-	        # sys.exit( )
-			glutDestroyWindow(glutGetWindow())
+		if key == '\033':
+			glutLeaveMainLoop()
+			# glutDestroyWindow(glutGetWindow())
+			# self.camera.position -= self.camera.target.normalize() * self.CAMERA_MOVE
+		# elif key == GLUT_KEY_UP:
+		# elif key == GLUT_KEY_DOWN:
+		# 	self.camera.position -= self.camera.up.normalize() * self.CAMERA_MOVE
+		# elif key == GLUT_KEY_RIGHT:
+		# elif key == GLUT_KEY_LEFT:
+		# 	self.camera.position -= Vector3.cross(self.camera.up.normalize(),self.camera.target.normalize()) * self.CAMERA_MOVE
+	def mouse(self, button, state, x, y):
+		print button
+		if button == GLUT_MIDDLE_BUTTON:
+			self.mouse.set(x, y)
+
+	def mouseMove(self, x, y):
+		newMouse = Vector2(x, y)
+		delta = (newMouse - self.mouse).normalize()
+		self.mouse = newMouse
+		if delta.x > 0:
+			self.camera.position -= Vector3.cross(self.camera.up.normalize(),self.camera.target.normalize()) * delta.x * self.PAN_MOVE
+		else:
+			self.camera.position += Vector3.cross(self.camera.up.normalize(),self.camera.target.normalize()) * abs(delta.x) * self.PAN_MOVE
+		if delta.y < 0:
+			self.camera.position -= self.camera.up.normalize() * abs(delta.y) * self.PAN_MOVE
+		else:
+			self.camera.position += self.camera.up.normalize() * delta.y *self.PAN_MOVE
+				
+		print delta
+
+	def mouseWheel(self, wheel, forward, x, y):
+		print forward
+		if forward == 1:
+			self.camera.position += self.camera.target.normalize() * self.ZOOM_MOVE
+		else:
+			self.camera.position -= self.camera.target.normalize() * self.ZOOM_MOVE
 	
 	def compileShaders(self):
 		program = glCreateProgram()

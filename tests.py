@@ -1,9 +1,10 @@
-from Import import Import
-from Scene import Scene
+# from IO import IO
+# from Scene import Scene
 
-n = Import.obj('box.obj')
+import pySG
+n = pySG.load('box.obj')
 n.position.z += 3.0
-s = Scene()
+s = pySG.Scene()
 s.node = n
 s.camera.position.z -= 2.0
 

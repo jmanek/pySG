@@ -9,12 +9,12 @@ formats = {'.obj':obj.export}
 
 
 
-def export(node, fp):
+def export(node, fp, options={}):
 
 	ext = os.path.splitext(fp)[1]
 
 	if ext in formats:
-		formats[ext](node, fp)
+		formats[ext](node, fp, options)
 	else:
 		print ext +  ' not supported'
 

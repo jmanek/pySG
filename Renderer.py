@@ -3,8 +3,8 @@ import sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-from Vector2 import Vector2
-from Vector3 import Vector3
+from Math import Vector2
+from Math import Vector3
 import numpy as np
 import ctypes
 import math

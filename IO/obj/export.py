@@ -4,7 +4,7 @@ import os
 
 
 
-def export(node, fp):
+def export(node, fp, options):
 
 	vO = 1
 	vnO = 0
@@ -14,14 +14,14 @@ def export(node, fp):
 	vts = []
 	fs = []
 	materials = set()
+	createMaterialLibrary = False
 	with open(fp, 'w+') as fl:
 
 		for n in [node] + node.getAllChildren():
 			if n.mesh is None: continue
 			m = n.mesh
 			t = n.transform
-			print t._matrix
-			# t.updateMatrix()
+			t.updateMatrix()
 			if n.name is not None:
 				fs.append('g {0}\n'.format(n.name))
 			else:
@@ -33,8 +33,10 @@ def export(node, fp):
 
 			for v in m.vertices:
 				v = t.transformVector(v)
+				if 'flipX' in options:
+					v.x = -v.x
 				# fl.write('v {0} {1} {2}\n'.format(v[0], v[1], v[2]))
-				vs.append('v {0} {1} {2}'.format(-v.x, v.y, v.z))
+				vs.append('v {0} {1} {2}'.format(v.x, v.y, v.z))
 			for vn in m.normals:
 				vns.append('vn {0} {1} {2}'.format(vn.x, vn.y, vn.z))
 			for vt in m.texCoords:
@@ -62,9 +64,12 @@ def export(node, fp):
 
 				mat = n.getMaterial(f)
 				if mat is not None and (currMaterial is None or currMaterial.name != mat.name):
+					createMaterialLibrary = True
 					currMaterial = mat
 					l.insert(0, 'usemtl {0}\n'.format(currMaterial.name))
-					materials.add(currMaterial)
+
+					if currMaterial.ambient is not None or currMaterial.diffuse is not None or currMaterial.ambientMap is not None or currMaterial.diffuseMap is not None:
+						materials.add(currMaterial)
 
 				fs.append(' '.join(l))
 				# fl.write(' '.join(l) + '\n')
@@ -72,7 +77,7 @@ def export(node, fp):
 			vnO += len(m.normals)
 			vtO += len(m.texCoords)
 
-		if len(materials) != 0: fl.write('mtllib {0}\n'.format(os.path.splitext(fp)[0]+'.mtl'))
+		if createMaterialLibrary: fl.write('mtllib {0}\n'.format(os.path.split(fp)[1].replace('.obj', '.mtl')))
 		fl.write('\n'.join(vs)+'\n')
 		fl.write('\n'.join(vns)+'\n')
 		fl.write('\n'.join(vts)+'\n')

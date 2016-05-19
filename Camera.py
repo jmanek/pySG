@@ -1,4 +1,4 @@
-from Vector3 import Vector3
+from Math import Vector3
 
 import numpy as np
 import math

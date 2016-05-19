@@ -16,6 +16,8 @@ class Transform(object):
 		self.rotation = Quaternion()
 		self._matrix = identity
 		self.parent = None
+		#For hardcoding a matrix, pos/rot/scale will not work
+		self.ignoreTRS = False
 
 	# http://run.usc.edu/cs520-s15/assign2/p245-shoemake.pdf
 	def setRotation(self, quat):
@@ -94,6 +96,7 @@ class Transform(object):
 
 
 	def updateMatrix(self):
+		if self.ignoreTRS: return
 		self.updateRotationMatrix()
 		self.updateTranslationMatrix()
 		self.updateScaleMatrix()
@@ -115,7 +118,7 @@ class Transform(object):
 
 	@property
 	def matrix(self):
-		# self.updateMatrix()
+		self.updateMatrix()
 		return self._matrix
 
 	@matrix.setter

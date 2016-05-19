@@ -2,7 +2,7 @@ import collada
 import random, string
 import numpy as np
 from ...Math import *
-def export(node, fp):
+def export(node, fp, options):
 	debug = open(fp.replace('.dae', '_DEBUG.txt'), 'w+')
 		
 	def buildNode(n):
